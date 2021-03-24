@@ -36,13 +36,19 @@ bool AVL::addFunction(Node*& temp, int data) {
 
 			if (data < temp->data) {
 				// cout << "left" << endl;
-			return addFunction(temp->left, data);
-			calc_height(temp);
+				bool rval = addFunction(temp->left, data);
+				calc_height(temp);
+				return rval;
 		}
 			else if (data > temp->data) {
-				// cout << "right" << endl;
-			return addFunction(temp->right, data);
-			calc_height(temp);
+				//cout << "right" << endl;
+				bool rval = addFunction(temp->right, data);
+				calc_height(temp);
+				if (rval) {
+					
+					isBalanced(temp);
+				}
+				return rval;
 		}
 			else  {
 				// cout << "wrong" << endl;
@@ -72,6 +78,67 @@ void AVL::calc_height(Node* node) {
 	node->setHeight(max + 1);
 	cout << "calc_height" << node->getData() << "=";
 	cout << node->getHeight() << endl;
+}
+
+void AVL::isBalanced(Node* node) {
+	int rightBal;
+	int leftBal;
+	int bal = get_balance(node);
+
+	if (node->right != NULL) {
+		rightBal = get_balance(node->right);
+	}
+	else {
+		rightBal = 0;
+	}
+	if (node->left != NULL) {
+		leftBal = get_balance(node->left);
+	}
+	else {
+		leftBal = 0;
+	}
+
+	if (bal == -2) {
+		if (leftBal == 1) {
+			rotateLeft(node->left);
+			rotateRight(node);
+		}	
+		else {
+			rotateRight(node);
+		}
+	}
+	else if (bal == 2) {
+		if (rightBal == -1) {
+			rotateRight(node->right);
+			rotateLeft(node);
+		}	
+		else {
+			rotateLeft(node);
+		}
+	}
+	// else {
+	// 	return true;
+	// }
+}
+
+int AVL::get_balance(Node* node) {
+	int rightHeight;
+	int leftHeight;
+	// Node* myRight = node->right;
+	if(node->right != NULL) {
+		rightHeight = node->right->height;
+	}
+	else {
+		rightHeight = 0;
+	}
+	if(node->left != NULL) {
+		leftHeight = node->left->height;
+	}
+	else {
+		leftHeight = 0;
+	}
+	int bal = rightHeight - leftHeight;
+	cout << "My Balance" << bal << endl;
 }
 
 bool AVL::remove(int data) {

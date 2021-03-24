@@ -28,6 +28,8 @@ public:
 
 	int get_height(Node* node);
 	void calc_height(Node* node);
+	void isBalanced(Node* node);
+	int get_balance(Node* node);
 protected:
 	Node *root;
 
