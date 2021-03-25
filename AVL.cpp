@@ -30,11 +30,9 @@ bool AVL::addFunction(Node*& temp, int data) {
 		*/
 		//cout << "add " << data << endl;
 		if(temp == NULL) { // previous temp does not have "child"
-			// cout << "add valuye" << endl;
+		//	cout << "add value " << data << endl;
 			temp = new Node(data);
-			//cout << "   add <" << data << endl;
-			//calc_height(temp);
-			//cout << "FINISH ADD" << endl;
+
 			return true;
 		}
 
@@ -92,7 +90,7 @@ void AVL::isBalanced(Node*& node) {
 	int rightBal;
 	int leftBal;
 	int bal = get_balance(node);
-	cout << "My Balance "  << node->data << " = " << bal << endl;
+	//cout << "My Balance "  << node->data << " = " << bal << endl;
 
 	if (node->right != NULL) {
 
@@ -115,27 +113,25 @@ void AVL::isBalanced(Node*& node) {
 	if (bal == -2) {
 		if (leftBal == 1) {
 			rotateLeft(node->left);
-			cout << "  rotate left " <<  node->data << endl;
+		//	cout << "  rotate left " <<  node->data << endl;
 			rotateRight(node);
-			cout << "  rotate right" << node->data << endl;
+		//	cout << "  rotate right" << node->data << endl;
 		}	
 		else {
 			rotateRight(node);
-			cout << "  rotate right" << node->data << endl;
+		//	cout << "  rotate right" << node->data << endl;
 		}
 	}
 	else if (bal == 2) {
 		if (rightBal == -1) {
 			rotateRight(node->right);
-			cout << "  rotate right " << node->data << endl;
+		//	cout << "  rotate right " << node->data << endl;
 			rotateLeft(node);
-			cout << "  rotate left " <<  node->data << endl;
+	//		cout << "  rotate left " <<  node->data << endl;
 		}	
 		else {
-			cout << "  rotate left " <<  node->data << endl;
+		//	cout << "  rotate left " <<  node->data << endl;
 			rotateLeft(node);
-			//--node->height;
-			//cout << node->data << " height = " << node->height << endl;
 			return;
 		}
 	}
@@ -147,7 +143,7 @@ void AVL::isBalanced(Node*& node) {
 int AVL::get_balance(Node* node) {
 	int rightHeight;
 	int leftHeight;
-	// Node* myRight = node->right;
+
 	if(node->right != NULL) {
 		rightHeight = node->right->height;
 	//	cout << "...RIGHT height" << rightHeight << endl;
@@ -190,14 +186,8 @@ bool AVL::removeFunction(Node*& temp, int data) {
 			}
 			else { // item is the tempRoot
 				Node* oldRoot = temp; // copy root to prevent memory mulfunction
-				// if (temp->left == NULL && temp->right == NULL) {
-				// 	cout << "DELETE " << temp->data << endl;
-				// 	temp = NULL;
-				// 	delete oldRoot;
-				// }
-				// else 
 				if (temp->left == NULL) {
-						cout << "DELETE " << temp->data << endl;
+				//		cout << "DELETE " << temp->data << endl;
 						// cout << "remove one child " << data << endl;
 						temp = temp->right;
 						// because tempRoot is a reference to its partent
@@ -206,18 +196,19 @@ bool AVL::removeFunction(Node*& temp, int data) {
 						delete oldRoot; // prevent memory leak
 				}
 				else if (temp->right == NULL) {
-					cout << "DELETE " << temp->data << endl;
+			//		cout << "DELETE " << temp->data << endl;
 					// cout << "remove one child" << data << endl;
 					temp = temp->left;
 					//* set the parent of tempRoot ro reference to "left child"
 					delete oldRoot;
 			}
 			else {
-				cout << "DELETE BOTH " << temp->data << endl;
+			//	cout << "DELETE BOTH " << temp->data << endl;
 				// cout << "remove 2 children " << data << endl;
 				replace(oldRoot, temp->left);
 				calc_height(temp->left);
 				isBalanced(temp);
+				//delete oldRoot;
 				// return true;
 			}
 			//delete oldRoot;
@@ -254,6 +245,7 @@ void AVL::replace(Node*& oldRoot, Node*& temp) {
 void AVL::clear() {
 	recursiveClear(root);
 	root = NULL;
+	delete root;
 }
 void AVL::recursiveClear(Node*& temp) {
 		if (temp != NULL) {

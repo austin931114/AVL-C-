@@ -11,7 +11,7 @@ using namespace std;
 class AVL : public AVLInterface {
 public:
 	AVL() {}
-	virtual ~AVL() {}
+	~AVL() {clear();}
 
 	NodeInterface * getRootNode() const;
 
@@ -34,6 +34,6 @@ public:
 	void isBalanced(Node*& node);
 	int get_balance(Node* node);
 protected:
-	Node *root;
+	Node *root = NULL;
 
 };
