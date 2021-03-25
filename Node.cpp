@@ -36,3 +36,4 @@ int Node::getHeight()
 void Node::setHeight(int val) {
 	height = val;
 }
+
