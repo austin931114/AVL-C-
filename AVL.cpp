@@ -252,8 +252,17 @@ void AVL::replace(Node*& oldRoot, Node*& temp) {
 
 
 void AVL::clear() {
-
+	recursiveClear(root);
+	root = NULL;
 }
+void AVL::recursiveClear(Node*& temp) {
+		if (temp != NULL) {
+			// clear from small value to large value
+			recursiveClear(temp->left);
+			recursiveClear(temp->right);
+			delete temp;
+		}
+	}
 
 void AVL::rotateLeft(Node*& local_root) {
 	

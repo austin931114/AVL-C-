@@ -12,23 +12,16 @@ Add 7
 Add 9
 PrintBST
 Remove 11
-PrintBST
 Remove 10
-PrintBST
 Remove 9
-PrintBST
 Remove 6
 PrintBST
 Remove 8
-PrintBST
 Remove 7
 PrintBST
 Remove 5
-PrintBST
 Remove 4
-PrintBST
 Remove 3
-PrintBST
 Remove 2
 PrintBST
 Remove 1

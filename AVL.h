@@ -23,6 +23,7 @@ public:
 	void replace(Node*& oldRoot, Node*& temp);
 
 	void clear();
+	void recursiveClear(Node*& temp);
 
 	void rotateLeft(Node*& local_root);
 
