@@ -19,6 +19,8 @@ public:
 	bool addFunction(Node*& temp, int data);
 
 	bool remove(int data);
+	bool removeFunction(Node*& temp, int data);
+	void replace(Node*& oldRoot, Node*& temp);
 
 	void clear();
 

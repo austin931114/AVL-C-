@@ -71,24 +71,6 @@ int AVL::get_height(Node*& node) {
 	}
 }
 void AVL::calc_height(Node*& node) {
-
-	// if(node == nullptr) {
-	// 	return 0;
-	// }
-
-	// int leftHeight = 0;
-	// int rightHeight = 0;
-
-	// 	if (node->left != NULL)
-	// 	{
-	// 		leftHeight = node->left->getHeight();
-	// 	}
-	// 	if (node->right != NULL)
-	// 	{
-	// 		rightHeight = node->right->getHeight();
-	// 	}
-	// 	return max(leftHeight, rightHeight) + 1;
-
 	if(node == nullptr) {
 		return;
 	}
@@ -110,7 +92,7 @@ void AVL::isBalanced(Node*& node) {
 	int rightBal;
 	int leftBal;
 	int bal = get_balance(node);
-	//cout << "My Balance "  << node->data << " = " << bal << endl;
+	cout << "My Balance "  << node->data << " = " << bal << endl;
 
 	if (node->right != NULL) {
 
@@ -133,24 +115,24 @@ void AVL::isBalanced(Node*& node) {
 	if (bal == -2) {
 		if (leftBal == 1) {
 			rotateLeft(node->left);
-		//	cout << "  rotate left " <<  node->data << endl;
+			cout << "  rotate left " <<  node->data << endl;
 			rotateRight(node);
-	//		cout << "  rotate right" << endl;
+			cout << "  rotate right" << node->data << endl;
 		}	
 		else {
 			rotateRight(node);
-	//		cout << "  rotate right" << endl;
+			cout << "  rotate right" << node->data << endl;
 		}
 	}
 	else if (bal == 2) {
 		if (rightBal == -1) {
 			rotateRight(node->right);
-		//	cout << "  rotate right" << endl;
+			cout << "  rotate right " << node->data << endl;
 			rotateLeft(node);
-		//	cout << "  rotate left " <<  node->data << endl;
+			cout << "  rotate left " <<  node->data << endl;
 		}	
 		else {
-		//	cout << "  rotate left " <<  node->data << endl;
+			cout << "  rotate left " <<  node->data << endl;
 			rotateLeft(node);
 			//--node->height;
 			//cout << node->data << " height = " << node->height << endl;
@@ -186,8 +168,88 @@ int AVL::get_balance(Node* node) {
 }
 
 bool AVL::remove(int data) {
+	return removeFunction(root, data);
+}
+
+bool AVL::removeFunction(Node*& temp, int data) {
+	if (temp == NULL) {
+		return false;
+	}
+	else {
+			if (data < temp->data) {
+				bool rval = removeFunction(temp->left, data);
+				calc_height(temp->left);
+				isBalanced(temp);
+				return rval;
+		  }
+			else if (data > temp->data) {
+				bool rval = removeFunction(temp->right, data);
+				calc_height(temp->right);
+				isBalanced(temp);
+				return rval;
+			}
+			else { // item is the tempRoot
+				Node* oldRoot = temp; // copy root to prevent memory mulfunction
+				// if (temp->left == NULL && temp->right == NULL) {
+				// 	cout << "DELETE " << temp->data << endl;
+				// 	temp = NULL;
+				// 	delete oldRoot;
+				// }
+				// else 
+				if (temp->left == NULL) {
+						cout << "DELETE " << temp->data << endl;
+						// cout << "remove one child " << data << endl;
+						temp = temp->right;
+						// because tempRoot is a reference to its partent
+						// when tempRoot set to right, its parent will reference to right
+						// and omit tempRoot
+						delete oldRoot; // prevent memory leak
+				}
+				else if (temp->right == NULL) {
+					cout << "DELETE " << temp->data << endl;
+					// cout << "remove one child" << data << endl;
+					temp = temp->left;
+					//* set the parent of tempRoot ro reference to "left child"
+					delete oldRoot;
+			}
+			else {
+				cout << "DELETE BOTH " << temp->data << endl;
+				// cout << "remove 2 children " << data << endl;
+				replace(oldRoot, temp->left);
+				calc_height(temp->left);
+				isBalanced(temp);
+				// return true;
+			}
+			//delete oldRoot;
+			return true;
+	}
+	}
+
+
+	// else if (temp->data == data) {
+	// 	if (temp->left == NULL && temp->right == NULL) {
+
+	// 	}
+
+	// }
 
 }
+void AVL::replace(Node*& oldRoot, Node*& temp) {
+		// find right most root, because right most root is the biggest value that smaller than oldRoot
+		if (temp->right != NULL) {
+			replace(oldRoot, temp->right);
+		}
+		else {
+			// set the oldRoot value to right most root's value
+			oldRoot->data = temp->data;
+			// remove the right most root
+			removeFunction(oldRoot->left, temp->data);
+			
+			//isBalanced(oldRoot);
+			
+		}
+	}
+
 
 void AVL::clear() {
 
@@ -200,14 +262,9 @@ void AVL::rotateLeft(Node*& local_root) {
 	temp->left = local_root;
 	local_root = temp;
 	calc_height(temp->left);
-	//cout << temp->left->data << " height = " << temp->left->height << endl;
-	// --local_root->height;
-	//cout << "            current height " << local_root->data << " = " << local_root->height << endl;
 }
 
 void AVL::rotateRight(Node*& local_root) {
-	--local_root->height;
-
 	Node* temp = local_root->left;
 	local_root->left = temp->right;
 	temp->right = local_root;
